@@ -58,7 +58,7 @@ export default function SignupPage() {
       
       if (authData.session) {
         // If email confirmation is disabled, Supabase automatically logs them in
-        window.location.href = '/workspace';
+        window.location.href = '/dashboard';
       } else {
         // If email confirmation is enabled, they need to check their email
         setEmailSent(true);
@@ -81,7 +81,7 @@ export default function SignupPage() {
       });
       if (error) throw error;
       // Wait for redirect to happen or push manually, but middleware usually handles it
-      window.location.href = '/workspace';
+      window.location.href = '/dashboard';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Google login failed.';
       toast.error(message);

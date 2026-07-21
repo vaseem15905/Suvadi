@@ -6,7 +6,6 @@ import { APP_NAME } from '@/lib/constants';
 const footerLinks = {
   Product: [
     { label: 'Features', href: '#features' },
-    { label: 'Pricing', href: '#pricing' },
     { label: 'Changelog', href: '#' },
     { label: 'Roadmap', href: '#' },
   ],
@@ -45,25 +44,9 @@ export function Footer() {
           {/* Brand Column */}
           <div className="col-span-2">
             <Logo size="md" showTagline />
-            <p className="mt-4 max-w-xs text-sm text-foreground-muted leading-relaxed">
-              The collaborative workspace for workshops, classrooms, conferences, and
-              knowledge-sharing sessions.
+            <p className="mt-4 max-w-xs text-sm text-foreground-muted leading-relaxed font-medium">
+              Become Knowledge.
             </p>
-            {/* Social Links */}
-            <div className="mt-6 flex items-center gap-3">
-              {socialLinks.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex h-9 w-9 items-center justify-center rounded-lg text-foreground-muted hover:text-foreground hover:bg-surface transition-colors duration-200"
-                  aria-label={social.label}
-                >
-                  <social.icon className="h-[18px] w-[18px]" />
-                </a>
-              ))}
-            </div>
           </div>
 
           {/* Link Columns */}
