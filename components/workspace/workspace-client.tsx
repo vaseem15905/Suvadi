@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import {
   FileText, PenTool, FolderOpen, MessageCircleQuestion,
@@ -52,7 +52,9 @@ export function WorkspaceClient({ session, userId, isHost }: WorkspaceClientProp
   const [isFullscreen, setIsFullscreen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const supabase = createClient();
+  const router = useRouter();
 
+  // Settings sync listener
   useEffect(() => {
     const channel = supabase
       .channel('session-settings')
@@ -70,6 +72,29 @@ export function WorkspaceClient({ session, userId, isHost }: WorkspaceClientProp
       supabase.removeChannel(channel);
     };
   }, [session.id, supabase]);
+
+  // Kick listener
+  useEffect(() => {
+    if (isHost) return;
+
+    const channel = supabase
+      .channel('kick-listener')
+      .on(
+        'postgres_changes',
+        { event: 'DELETE', schema: 'public', table: 'session_participants', filter: `session_id=eq.${session.id}` },
+        (payload) => {
+          if (payload.old && payload.old.user_id === userId) {
+            toast.error('You have been removed from this session by the host.');
+            router.push('/dashboard');
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [session.id, userId, isHost, supabase, router]);
 
   const toggleInteractions = async () => {
     const newVal = !allowInteractions;

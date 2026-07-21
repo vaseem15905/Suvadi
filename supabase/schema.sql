@@ -234,6 +234,10 @@ create policy "Participants visible to session members" on public.session_partic
   for select using (public.is_session_host(session_id) or public.is_session_member(session_id));
 create policy "Users can join sessions" on public.session_participants
   for insert with check (auth.uid() = user_id);
+create policy "Host can remove participants" on public.session_participants
+  for delete using (public.is_session_host(session_id));
+create policy "Users can leave sessions" on public.session_participants
+  for delete using (auth.uid() = user_id);
 
 -- Notes
 create policy "Session members can view notes" on public.notes
