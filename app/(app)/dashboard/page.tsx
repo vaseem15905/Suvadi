@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { PlusCircle, CalendarDays, Clock, ArrowRight, Users, Zap, KeyRound } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { SessionCardActions } from '@/components/dashboard/session-card-actions';
 
 export const metadata: Metadata = { title: 'Dashboard' };
 
@@ -128,6 +129,17 @@ export default async function DashboardPage() {
                     {new Date(session.created_at).toLocaleDateString()}
                   </div>
                 </div>
+                
+                {/* Actions: Copy & Delete */}
+                <div className="mr-2">
+                  <SessionCardActions 
+                    sessionId={session.id}
+                    joinCode={session.join_code}
+                    isHost={session.host_id === user?.id}
+                    iconOnly
+                  />
+                </div>
+
                 <span className={cn(
                   'rounded-full px-2.5 py-1 text-xs font-medium flex-shrink-0',
                   session.status === 'active' ? 'bg-success/10 text-success' : 'bg-border text-foreground-muted'

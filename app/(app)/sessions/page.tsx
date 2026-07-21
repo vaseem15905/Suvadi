@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { PlusCircle, Copy, Users, Globe, Lock, Zap } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { SessionCardActions } from '@/components/dashboard/session-card-actions';
 
 export const metadata: Metadata = { title: 'My Sessions' };
 
@@ -103,16 +104,12 @@ export default async function SessionsPage() {
                 </div>
               </div>
 
-              <div className="mt-3 flex items-center gap-2 pt-3 border-t border-border">
-                <code className="flex-1 text-xs bg-background-secondary rounded-lg px-2 py-1 font-mono text-foreground-muted truncate">
-                  Join: {session.join_code}
-                </code>
-                <button
-                  onClick={(e) => { e.preventDefault(); navigator.clipboard.writeText(session.join_code); }}
-                  className="flex h-7 w-7 items-center justify-center rounded-lg border border-border hover:bg-background-secondary transition-colors"
-                >
-                  <Copy className="h-3 w-3 text-foreground-muted" />
-                </button>
+              <div className="mt-3 pt-3 border-t border-border">
+                <SessionCardActions 
+                  sessionId={session.id} 
+                  joinCode={session.join_code} 
+                  isHost={session.host_id === user?.id} 
+                />
               </div>
             </Link>
           ))}

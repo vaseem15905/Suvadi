@@ -191,15 +191,46 @@ export function WorkspaceResources({ sessionId, userId, isHost, allowInteraction
 
   const deleteFolder = async (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
+
+    // 1. Find all nested folders
+    const allFolderIds = new Set<string>([id]);
+    let added = true;
+    while (added) {
+      added = false;
+      for (const f of folders) {
+        if (f.parent_id && allFolderIds.has(f.parent_id) && !allFolderIds.has(f.id)) {
+          allFolderIds.add(f.id);
+          added = true;
+        }
+      }
+    }
+
+    // 2. Find all resources in these folders
+    const resourcesToDelete = resources.filter(r => r.folder_id && allFolderIds.has(r.folder_id));
+    
+    // 3. Delete physical files from storage
+    if (resourcesToDelete.length > 0) {
+      const paths = resourcesToDelete
+        .map(r => {
+          const parts = r.url.split('/resources/');
+          return parts.length > 1 ? parts[1] : null;
+        })
+        .filter((p): p is string => p !== null);
+        
+      if (paths.length > 0) {
+        await supabase.storage.from('resources').remove(paths);
+      }
+    }
+
+    // 4. Delete the top-level folder (will CASCADE delete subfolders and DB resources)
     const { error } = await supabase.from('resource_folders').delete().eq('id', id);
     if (error) {
       toast.error(`Error deleting folder: ${error.message}`);
       return;
     }
-    setFolders(f => f.filter(x => x.id !== id));
-    // Note: Due to ON DELETE CASCADE on resources.folder_id, the resources in this folder are deleted from DB,
-    // but their corresponding storage files remain orphaned. For a complete solution, a backend trigger or 
-    // recursive fetch+storage delete is required, but this suffices for the current implementation.
+    
+    setFolders(f => f.filter(x => !allFolderIds.has(x.id)));
+    setResources(r => r.filter(x => !(x.folder_id && allFolderIds.has(x.folder_id))));
     load();
   };
 
