@@ -75,7 +75,9 @@ export function Footer() {
             &copy; {new Date().getFullYear()} {APP_NAME}. All rights reserved.
           </p>
           <p className="text-xs text-foreground-subtle">
-            Built with 💜 by <a href="https://vaseem.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Vaseem</a> & <a href="https://prasathdev.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Prasath</a>
+            {/*Built with 💜 by <a href="https://vaseem.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Vaseem</a> & <a href="https://prasathdev.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Prasath</a>*/}
+            Built with 💚 by <a href="https://vaseem.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Ben10</a>
+          </p>
           </p>
         </div>
       </div>
