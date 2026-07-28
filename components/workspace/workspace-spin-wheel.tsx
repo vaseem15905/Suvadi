@@ -157,27 +157,22 @@ export function WorkspaceSpinWheel({ sessionId, userId, isHost }: WorkspaceSpinW
           {/* Names */}
           {validParticipants.map((p, i) => {
             const startAngle = i * sliceAngle;
-            // Determine if the text should be flipped to be readable on the bottom half.
-            // Actually, for a spin wheel, writing from center outwards is standard.
             return (
               <div 
                 key={p.id}
-                className="absolute top-0 left-1/2 w-8 h-1/2 origin-bottom -translate-x-1/2 flex flex-col justify-start items-center pt-4 md:pt-6"
+                className="absolute top-1/2 left-1/2 w-1/2 h-8 -mt-4 origin-left flex items-center pl-10 md:pl-14 pr-2"
                 style={{
-                  transform: `translateX(-50%) rotate(${startAngle + sliceAngle / 2}deg)`
+                  transform: `rotate(${startAngle + sliceAngle / 2 - 90}deg)`
                 }}
               >
-                {/* The text flows along the height. -rotate-90 writes it from edge to center. */}
-                <div className="h-full w-full relative flex justify-center pt-2 md:pt-4">
-                   <span 
-                     className="absolute whitespace-nowrap text-white font-bold text-sm md:text-base origin-left drop-shadow-md"
-                     style={{
-                       transform: 'rotate(90deg) translateX(10px)',
-                     }}
-                   >
-                     {p.profiles?.name?.split(' ')[0] ?? 'Unknown'}
-                   </span>
-                </div>
+                <span 
+                  className="text-white font-bold whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] block w-full text-left"
+                  style={{
+                    fontSize: Math.max(9, Math.min(16, 300 / validParticipants.length)) + 'px',
+                  }}
+                >
+                  {p.profiles?.name?.split(' ')[0] ?? 'Unknown'}
+                </span>
               </div>
             );
           })}
