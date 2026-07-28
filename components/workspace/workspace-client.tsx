@@ -193,12 +193,24 @@ export function WorkspaceClient({ session, userId, isHost }: WorkspaceClientProp
 
       {/* Main Content Area (No internal sidebar anymore) */}
       <div className="flex-1 flex flex-col overflow-hidden relative">
-        {activeTab === 'notes'         && <WorkspaceNotes sessionId={session.id} userId={userId} isHost={isHost} />}
-        {activeTab === 'whiteboard'    && <WorkspaceWhiteboard sessionId={session.id} userId={userId} isHost={isHost} allowInteractions={allowInteractions} />}
-        {activeTab === 'resources'     && <WorkspaceResources sessionId={session.id} userId={userId} isHost={isHost} allowInteractions={allowInteractions} />}
-        {activeTab === 'questions'     && <WorkspaceQuestions sessionId={session.id} userId={userId} isHost={isHost} allowInteractions={allowInteractions} />}
-        {activeTab === 'announcements' && <WorkspaceAnnouncements sessionId={session.id} userId={userId} isHost={isHost} />}
-        {activeTab === 'participants'  && <WorkspaceParticipants sessionId={session.id} userId={userId} isHost={isHost} />}
+        <div className={cn("flex-1 flex-col w-full h-full", activeTab === 'notes' ? "flex" : "hidden")}>
+          <WorkspaceNotes sessionId={session.id} userId={userId} isHost={isHost} />
+        </div>
+        <div className={cn("flex-1 flex-col w-full h-full", activeTab === 'whiteboard' ? "flex" : "hidden")}>
+          <WorkspaceWhiteboard sessionId={session.id} userId={userId} isHost={isHost} allowInteractions={allowInteractions} />
+        </div>
+        <div className={cn("flex-1 flex-col w-full h-full", activeTab === 'resources' ? "flex" : "hidden")}>
+          <WorkspaceResources sessionId={session.id} userId={userId} isHost={isHost} allowInteractions={allowInteractions} />
+        </div>
+        <div className={cn("flex-1 flex-col w-full h-full", activeTab === 'questions' ? "flex" : "hidden")}>
+          <WorkspaceQuestions sessionId={session.id} userId={userId} isHost={isHost} allowInteractions={allowInteractions} />
+        </div>
+        <div className={cn("flex-1 flex-col w-full h-full", activeTab === 'announcements' ? "flex" : "hidden")}>
+          <WorkspaceAnnouncements sessionId={session.id} userId={userId} isHost={isHost} />
+        </div>
+        <div className={cn("flex-1 flex-col w-full h-full", activeTab === 'participants' ? "flex" : "hidden")}>
+          <WorkspaceParticipants sessionId={session.id} userId={userId} isHost={isHost} />
+        </div>
       </div>
     </div>
   );

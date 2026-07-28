@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Camera } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { UserAvatar } from '@/components/shared/user-avatar';
@@ -78,9 +77,6 @@ export default function ProfilePage() {
                 userId={userId} 
                 className="h-20 w-20 text-2xl" 
               />
-              <button className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full bg-surface border border-border shadow-sm hover:bg-background-secondary transition-colors">
-                <Camera className="h-3.5 w-3.5 text-foreground-muted" />
-              </button>
             </div>
             <div>
               <div className="text-base font-semibold text-foreground">{profile?.name ?? 'Loading...'}</div>

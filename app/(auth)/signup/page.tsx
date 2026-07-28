@@ -6,7 +6,7 @@ import { GoogleLogin } from '@react-oauth/google';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Eye, EyeOff, ArrowRight, Globe, CheckCircle } from 'lucide-react';
+import { Eye, EyeOff, ArrowRight, Globe, CheckCircle, MailCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { createClient } from '@/lib/supabase/client';
@@ -62,6 +62,10 @@ export default function SignupPage() {
       } else {
         // If email confirmation is enabled, they need to check their email
         setEmailSent(true);
+        toast.success('Confirmation email has been sent', {
+          description: 'Please check your inbox to activate your account.',
+          icon: <MailCheck className="h-5 w-5 text-brand" />,
+        });
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Signup failed. Please try again.';

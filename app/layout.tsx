@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { DM_Sans } from 'next/font/google';
 import { Providers } from '@/components/providers';
 import { APP_NAME, APP_TAGLINE, APP_DESCRIPTION, APP_URL } from '@/lib/constants';
+import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 
 const dmSans = DM_Sans({
@@ -72,6 +73,7 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen antialiased">
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

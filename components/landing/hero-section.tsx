@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, ShieldCheck, Users, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { APP_TAGLINE } from '@/lib/constants';
 
@@ -83,33 +83,24 @@ export function HeroSection() {
             </Link>
           </motion.div>
 
-          {/* Social proof */}
+          {/* Trust Indicators */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.7 }}
-            className="mt-12 flex items-center justify-center gap-8 text-sm text-foreground-subtle"
+            className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-sm text-foreground-subtle font-medium"
           >
             <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <div
-                    key={i}
-                    className="h-7 w-7 rounded-full border-2 border-background bg-brand flex items-center justify-center text-[10px] text-white font-bold"
-                  >
-                    {String.fromCharCode(64 + i)}
-                  </div>
-                ))}
-              </div>
-              <span>2,000+ users</span>
+              <ShieldCheck className="h-5 w-5 text-brand" />
+              <span>Privacy-first design</span>
             </div>
-            <div className="hidden items-center gap-1 sm:flex">
-              {[1, 2, 3, 4, 5].map((i) => (
-                <svg key={i} className="h-4 w-4 text-yellow-400 fill-current" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-              ))}
-              <span className="ml-1">4.9/5 rating</span>
+            <div className="flex items-center gap-2">
+              <Users className="h-5 w-5 text-brand" />
+              <span>Built for collaboration</span>
+            </div>
+            <div className="hidden items-center gap-2 sm:flex">
+              <Zap className="h-5 w-5 text-brand" />
+              <span>Real-time sync</span>
             </div>
           </motion.div>
         </div>
