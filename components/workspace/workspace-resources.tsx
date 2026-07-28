@@ -5,6 +5,8 @@ import { createClient } from '@/lib/supabase/client';
 import { Upload, Trash2, FileText, FileImage, Film, FileArchive, Download, X, Eye, Folder, FolderPlus, ChevronRight } from 'lucide-react';
 import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface ResourceFolder {
   id: string;
@@ -81,6 +83,9 @@ export function WorkspaceResources({ sessionId, userId, isHost, allowInteraction
   const [showNewFolderModal, setShowNewFolderModal] = useState(false);
   const [newFolderName, setNewFolderName] = useState('');
   const [creatingFolder, setCreatingFolder] = useState(false);
+
+  const [viewingMarkdownResource, setViewingMarkdownResource] = useState<Resource | null>(null);
+  const [markdownContent, setMarkdownContent] = useState<string>('');
 
   const supabase = createClient();
 
@@ -234,6 +239,18 @@ export function WorkspaceResources({ sessionId, userId, isHost, allowInteraction
     load();
   };
 
+  const handleViewMarkdown = async (resource: Resource) => {
+    try {
+      const response = await fetch(resource.url);
+      if (!response.ok) throw new Error('Failed to fetch file');
+      const text = await response.text();
+      setMarkdownContent(text);
+      setViewingMarkdownResource(resource);
+    } catch (err: any) {
+      toast.error(`Could not load markdown file: ${err.message}`);
+    }
+  };
+
   const getBreadcrumbs = () => {
     const crumbs = [];
     let curr = currentFolderId;
@@ -371,6 +388,44 @@ export function WorkspaceResources({ sessionId, userId, isHost, allowInteraction
         </div>
       )}
 
+      {/* Markdown Viewer Modal */}
+      {viewingMarkdownResource && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4">
+          <div className="w-full max-w-4xl max-h-[85vh] flex flex-col rounded-2xl border border-border bg-surface shadow-xl animate-in zoom-in-95">
+            <div className="flex items-center justify-between p-4 border-b border-border bg-background rounded-t-2xl">
+              <h3 className="text-lg font-semibold text-foreground truncate flex items-center gap-2">
+                <FileText className="h-5 w-5 text-blue-500" />
+                {viewingMarkdownResource.name}
+              </h3>
+              <div className="flex items-center gap-2">
+                <a 
+                  href={`${viewingMarkdownResource.url}?download=`} 
+                  download 
+                  className="rounded-full p-2 hover:bg-background-secondary text-foreground-muted hover:text-brand transition-colors"
+                  title="Download File"
+                >
+                  <Download className="h-4 w-4" />
+                </a>
+                <button 
+                  onClick={() => setViewingMarkdownResource(null)} 
+                  className="rounded-full p-2 hover:bg-background-secondary text-foreground-muted hover:text-error transition-colors"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+            
+            <div className="flex-1 overflow-y-auto p-6 md:p-8 bg-background-secondary rounded-b-2xl">
+              <div className="prose prose-slate dark:prose-invert max-w-none prose-sm sm:prose-base bg-surface p-8 rounded-xl border border-border shadow-sm">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {markdownContent}
+                </ReactMarkdown>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-background-secondary">
         {currentFolders.length === 0 && currentResources.length === 0 ? (
           <div className="text-center py-12 text-foreground-subtle text-sm">
@@ -422,10 +477,17 @@ export function WorkspaceResources({ sessionId, userId, isHost, allowInteraction
                     )}
                   </div>
                   <div className="flex gap-1 flex-shrink-0 items-start mt-1">
-                    <a href={r.url} target="_blank" rel="noopener noreferrer" title="View Document"
-                      className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-muted hover:text-brand hover:bg-brand-muted transition-colors">
-                      <Eye className="h-4 w-4" />
-                    </a>
+                    {r.name.toLowerCase().endsWith('.md') ? (
+                      <button onClick={() => handleViewMarkdown(r)} title="Read Markdown"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-muted hover:text-brand hover:bg-brand-muted transition-colors">
+                        <Eye className="h-4 w-4" />
+                      </button>
+                    ) : (
+                      <a href={r.url} target="_blank" rel="noopener noreferrer" title="View Document"
+                        className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-muted hover:text-brand hover:bg-brand-muted transition-colors">
+                        <Eye className="h-4 w-4" />
+                      </a>
+                    )}
                     <a href={`${r.url}?download=`} download title="Download File"
                       className="flex h-8 w-8 items-center justify-center rounded-lg text-foreground-muted hover:text-brand hover:bg-brand-muted transition-colors">
                       <Download className="h-4 w-4" />

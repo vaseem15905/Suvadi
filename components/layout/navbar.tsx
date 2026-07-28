@@ -8,10 +8,28 @@ import { Logo } from '@/components/shared/logo';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { NAV_LINKS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
+import { createClient } from '@/lib/supabase/client';
+import { User } from '@supabase/supabase-js';
+import { AuthModal, AuthView } from '@/components/auth/auth-modal';
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [authModalConfig, setAuthModalConfig] = useState<{ isOpen: boolean, view: AuthView }>({ isOpen: false, view: 'login' });
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,27 +83,44 @@ export function Navbar() {
           {/* Desktop Actions */}
           <div className="hidden items-center gap-2 md:flex">
             <ThemeToggle />
-            <Link
-              href="/login"
-              className={cn(
-                'px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200',
-                'text-foreground-muted hover:text-foreground hover:bg-background-secondary'
-              )}
-            >
-              Log in
-            </Link>
-            <Link
-              href="/signup"
-              className={cn(
-                'inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg',
-                'bg-brand text-white',
-                'shadow-sm hover:shadow-md transition-all duration-200',
-                'hover:opacity-90 active:scale-[0.98]'
-              )}
-            >
-              Get Started
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
+            {user ? (
+              <Link
+                href="/dashboard"
+                className={cn(
+                  'inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg',
+                  'bg-brand text-white',
+                  'shadow-sm hover:shadow-md transition-all duration-200',
+                  'hover:opacity-90 active:scale-[0.98]'
+                )}
+              >
+                Dashboard
+                <ArrowRight className="h-3.5 w-3.5" />
+              </Link>
+            ) : (
+              <>
+                <button
+                  onClick={() => setAuthModalConfig({ isOpen: true, view: 'login' })}
+                  className={cn(
+                    'px-4 py-2 text-sm font-medium rounded-lg transition-colors duration-200',
+                    'text-foreground-muted hover:text-foreground hover:bg-background-secondary'
+                  )}
+                >
+                  Log in
+                </button>
+                <button
+                  onClick={() => setAuthModalConfig({ isOpen: true, view: 'signup' })}
+                  className={cn(
+                    'inline-flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg',
+                    'bg-brand text-white',
+                    'shadow-sm hover:shadow-md transition-all duration-200',
+                    'hover:opacity-90 active:scale-[0.98]'
+                  )}
+                >
+                  Get Started
+                  <ArrowRight className="h-3.5 w-3.5" />
+                </button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -144,34 +179,60 @@ export function Navbar() {
                   </Link>
                 ))}
                 <div className="pt-3 mt-3 border-t border-border space-y-2">
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      'block w-full px-4 py-3 text-center text-base font-medium rounded-lg',
-                      'text-foreground-muted hover:text-foreground hover:bg-background-secondary',
-                      'transition-colors duration-200'
-                    )}
-                  >
-                    Log in
-                  </Link>
-                  <Link
-                    href="/signup"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      'block w-full px-4 py-3 text-center text-base font-semibold rounded-lg',
-                      'bg-brand text-white',
-                      'transition-all duration-200'
-                    )}
-                  >
-                    Get Started
-                  </Link>
+                  {user ? (
+                    <Link
+                      href="/dashboard"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={cn(
+                        'block w-full px-4 py-3 text-center text-base font-semibold rounded-lg',
+                        'bg-brand text-white',
+                        'transition-all duration-200'
+                      )}
+                    >
+                      Dashboard
+                    </Link>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          setAuthModalConfig({ isOpen: true, view: 'login' });
+                        }}
+                        className={cn(
+                          'block w-full px-4 py-3 text-center text-base font-medium rounded-lg',
+                          'text-foreground-muted hover:text-foreground hover:bg-background-secondary',
+                          'transition-colors duration-200'
+                        )}
+                      >
+                        Log in
+                      </button>
+                      <button
+                        onClick={() => {
+                          setIsMobileMenuOpen(false);
+                          setAuthModalConfig({ isOpen: true, view: 'signup' });
+                        }}
+                        className={cn(
+                          'block w-full px-4 py-3 text-center text-base font-semibold rounded-lg',
+                          'bg-brand text-white',
+                          'transition-all duration-200'
+                        )}
+                      >
+                        Get Started
+                      </button>
+                    </>
+                  )}
                 </div>
               </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AuthModal 
+        isOpen={authModalConfig.isOpen} 
+        onClose={() => setAuthModalConfig({ ...authModalConfig, isOpen: false })} 
+        defaultView={authModalConfig.view} 
+      />
     </>
   );
 }

@@ -7,8 +7,8 @@ export const APP_DESCRIPTION =
 export const APP_URL = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
 export const NAV_LINKS = [
-  { label: 'Features', href: '#features' },
-  { label: 'Pricing', href: '#pricing' },
+  { label: 'Features', href: '/#features' },
+  { label: 'Docs', href: '/docs' },
   { label: 'About', href: '/about' },
   { label: 'Contact', href: '/contact' },
 ] as const;
@@ -155,7 +155,7 @@ export const FAQ_ITEMS = [
   },
   {
     question: 'Is Suvadi free to use?',
-    answer: 'Yes! Our free plan includes up to 3 active sessions with 10 participants each. For larger groups and advanced features like whiteboard and content blocks, check out our Pro and Enterprise plans.',
+    answer: 'Yes! Suvadi is completely free to use. You can create unlimited sessions, invite as many participants as you want, and access all features like notes, whiteboard, and Q&A without any restrictions.',
   },
   {
     question: 'How does real-time collaboration work?',
@@ -163,10 +163,10 @@ export const FAQ_ITEMS = [
   },
   {
     question: 'Can I use Suvadi for corporate training?',
-    answer: 'Absolutely. Our Enterprise plan includes SSO, advanced analytics, custom branding, and dedicated support — everything you need for organization-wide deployment.',
+    answer: 'Absolutely. Suvadi is perfect for corporate training, providing a fully real-time and interactive workspace that keeps trainees engaged and connected during sessions.',
   },
   {
     question: 'What file types can I upload?',
-    answer: 'You can upload PDFs, PowerPoint presentations, images, ZIP archives, code files, and more. Our Pro plan includes up to 10GB of storage per account.',
+    answer: 'You can upload PDFs, PowerPoint presentations, images, ZIP archives, code files, and more to share resources seamlessly with all participants.',
   },
 ] as const;

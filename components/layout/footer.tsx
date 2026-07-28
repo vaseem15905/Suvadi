@@ -5,26 +5,18 @@ import { APP_NAME } from '@/lib/constants';
 
 const footerLinks = {
   Product: [
-    { label: 'Features', href: '#features' },
-    { label: 'Changelog', href: '#' },
-    { label: 'Roadmap', href: '#' },
+    { label: 'Features', href: '/#features' },
   ],
   Resources: [
-    { label: 'Documentation', href: '#' },
-    { label: 'API Reference', href: '#' },
-    { label: 'Blog', href: '#' },
-    { label: 'Community', href: '#' },
+    { label: 'Documentation', href: '/docs' },
   ],
   Company: [
     { label: 'About', href: '/about' },
     { label: 'Contact', href: '/contact' },
-    { label: 'Careers', href: '#' },
-    { label: 'Press Kit', href: '#' },
   ],
   Legal: [
-    { label: 'Privacy Policy', href: '#' },
-    { label: 'Terms of Service', href: '#' },
-    { label: 'Cookie Policy', href: '#' },
+    { label: 'Privacy Policy', href: '/privacy' },
+    { label: 'Terms & Conditions', href: '/terms' },
   ],
 };
 
@@ -76,7 +68,7 @@ export function Footer() {
           </p>
           <p className="text-xs text-foreground-subtle">
             {/*Built with 💜 by <a href="https://vaseem.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Vaseem</a> & <a href="https://prasathdev.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Prasath</a>*/}
-            Built with 💚 by <a href="https://vaseem.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Ben10</a>
+            Built with 💚 by <a href="https://vaseem.me" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Ben10</a> & <a href="https://prasathdev.vercel.app/" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors font-medium">Sanji</a>
           </p>
         </div>
       </div>

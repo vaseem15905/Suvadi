@@ -1,9 +1,35 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Monitor, Smartphone, Tablet } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { AnimateOnScroll } from '@/components/shared/animate-on-scroll';
+import { cn } from '@/lib/utils';
+
+const devices = ['desktop', 'tablet', 'mobile'] as const;
+type Device = typeof devices[number];
+
+const deviceWidths = {
+  desktop: 1024,
+  tablet: 768,
+  mobile: 375
+};
 
 export function ProductShowcaseSection() {
+  const [activeDevice, setActiveDevice] = useState<Device>('desktop');
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveDevice(prev => {
+        const nextIndex = (devices.indexOf(prev) + 1) % devices.length;
+        return devices[nextIndex];
+      });
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const isMobile = activeDevice === 'mobile';
+  const isTablet = activeDevice === 'tablet';
   return (
     <section className="section-padding bg-background-secondary overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -23,26 +49,43 @@ export function ProductShowcaseSection() {
         {/* Device icons */}
         <AnimateOnScroll delay={0.2} className="mt-8 flex items-center justify-center gap-6">
           {[
-            { Icon: Monitor, label: 'Desktop' },
-            { Icon: Tablet, label: 'Tablet' },
-            { Icon: Smartphone, label: 'Mobile' },
-          ].map(({ Icon, label }) => (
-            <div key={label} className="flex flex-col items-center gap-2">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-surface border border-border text-foreground-muted shadow-xs">
+            { id: 'desktop', Icon: Monitor, label: 'Desktop' },
+            { id: 'tablet', Icon: Tablet, label: 'Tablet' },
+            { id: 'mobile', Icon: Smartphone, label: 'Mobile' },
+          ].map(({ id, Icon, label }) => (
+            <div 
+              key={id} 
+              className={cn(
+                "flex flex-col items-center gap-2 cursor-pointer transition-opacity duration-300",
+                activeDevice === id ? "opacity-100" : "opacity-40"
+              )}
+              onClick={() => setActiveDevice(id as Device)}
+            >
+              <div className={cn(
+                "flex h-12 w-12 items-center justify-center rounded-xl border shadow-xs transition-colors duration-300",
+                activeDevice === id ? "bg-brand text-white border-brand" : "bg-surface border-border text-foreground-muted"
+              )}>
                 <Icon className="h-5 w-5" />
               </div>
-              <span className="text-xs text-foreground-subtle">{label}</span>
+              <span className={cn(
+                "text-xs font-medium transition-colors duration-300",
+                activeDevice === id ? "text-foreground" : "text-foreground-subtle"
+              )}>{label}</span>
             </div>
           ))}
         </AnimateOnScroll>
 
         {/* Product Screenshot Mockup */}
-        <AnimateOnScroll delay={0.3} variant="scaleIn" className="mt-12">
-          <div className="relative mx-auto max-w-5xl">
+        <AnimateOnScroll delay={0.3} variant="scaleIn" className="mt-12 flex justify-center">
+          <motion.div 
+            className="relative w-full"
+            animate={{ maxWidth: deviceWidths[activeDevice] }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          >
             {/* Glow */}
             <div className="absolute -inset-8 rounded-3xl bg-gradient-to-r from-brand/10 via-purple-500/10 to-pink-500/10 blur-3xl" />
 
-            <div className="relative rounded-2xl border border-border bg-surface shadow-xl overflow-hidden">
+            <div className="relative rounded-2xl border border-border bg-surface shadow-xl overflow-hidden h-full flex flex-col">
               {/* Browser chrome */}
               <div className="flex items-center gap-2 border-b border-border px-4 py-3 bg-background-secondary">
                 <div className="flex gap-1.5">
@@ -58,26 +101,24 @@ export function ProductShowcaseSection() {
               </div>
 
               {/* App content */}
-              <div className="p-6 md:p-8 min-h-[350px] md:min-h-[450px]">
+              <div className="p-6 md:p-8 min-h-[350px] md:min-h-[450px] flex-1">
                 {/* Top bar */}
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-xl bg-brand flex items-center justify-center text-white text-sm font-bold">
-                      உ
-                    </div>
+                    <img src="/logo.png" alt="Logo" className="h-10 w-10 object-contain" />
                     <div>
                       <div className="h-4 w-40 rounded bg-foreground/10" />
                       <div className="h-3 w-24 rounded bg-foreground/5 mt-1.5" />
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className={cn("flex gap-2", isMobile && "hidden")}>
                     <div className="h-8 w-20 rounded-lg bg-brand-muted" />
                     <div className="h-8 w-8 rounded-lg bg-foreground/5" />
                   </div>
                 </div>
 
                 {/* Content grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className={cn("grid gap-4", isMobile ? "grid-cols-1" : "grid-cols-3")}>
                   {/* Card 1 — Notes */}
                   <div className="rounded-xl border border-border p-4 bg-background-secondary/50">
                     <div className="flex items-center gap-2 mb-3">
@@ -125,7 +166,7 @@ export function ProductShowcaseSection() {
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </AnimateOnScroll>
       </div>
     </section>

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -362,4 +363,32 @@
   html {
     @apply font-sans;
   }
+}
+
+/* ---- TipTap Task List Styles ---- */
+.prose ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+}
+
+.prose ul[data-type="taskList"] p {
+  margin: 0;
+}
+
+.prose ul[data-type="taskList"] li {
+  display: flex;
+}
+
+.prose ul[data-type="taskList"] li > label {
+  flex: 0 0 auto;
+  margin-right: 0.5rem;
+  user-select: none;
+}
+
+.prose ul[data-type="taskList"] li > div {
+  flex: 1 1 auto;
+}
+
+.prose ul[data-type="taskList"] input[type="checkbox"] {
+  cursor: pointer;
 }

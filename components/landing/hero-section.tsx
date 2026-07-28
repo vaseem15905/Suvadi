@@ -1,11 +1,16 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, Play, ShieldCheck, Users, Zap } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { APP_TAGLINE } from '@/lib/constants';
+import { JoinSessionModal } from './join-session-modal';
+import { AuthModal, AuthView } from '@/components/auth/auth-modal';
 
 export function HeroSection() {
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
+  const [authModalConfig, setAuthModalConfig] = useState<{ isOpen: boolean, view: AuthView }>({ isOpen: false, view: 'signup' });
   return (
     <section className="relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28">
       {/* Background decoration */}
@@ -13,12 +18,7 @@ export function HeroSection() {
         {/* Radial gradient */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-gradient-to-b from-brand-muted via-transparent to-transparent rounded-full blur-3xl opacity-60" />
         {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.015] dark:opacity-[0.03]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-          }}
-        />
+
       </div>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -67,20 +67,20 @@ export function HeroSection() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4"
           >
-            <Link
-              href="/signup"
+            <button
+              onClick={() => setAuthModalConfig({ isOpen: true, view: 'signup' })}
               className="inline-flex items-center gap-2 rounded-xl px-7 py-3.5 text-base font-semibold text-white bg-brand shadow-md hover:shadow-lg transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
             >
               Create Workspace
               <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="#"
+            </button>
+            <button
+              onClick={() => setIsJoinModalOpen(true)}
               className="inline-flex items-center gap-2 rounded-xl border border-border bg-surface px-7 py-3.5 text-base font-semibold text-foreground shadow-xs hover:bg-surface-hover hover:shadow-sm transition-all duration-200 active:scale-[0.98]"
             >
               <Play className="h-4 w-4 text-brand" />
               Join Session
-            </Link>
+            </button>
           </motion.div>
 
           {/* Trust Indicators */}
@@ -161,21 +161,46 @@ export function HeroSection() {
                   </div>
                 </div>
                 {/* Main content */}
-                <div className="col-span-12 md:col-span-9 p-6 md:p-8">
-                  <div className="space-y-4">
-                    <div className="h-6 w-48 rounded bg-foreground/10 shimmer" />
-                    <div className="h-4 w-full rounded bg-foreground/5 shimmer" />
-                    <div className="h-4 w-5/6 rounded bg-foreground/5 shimmer" />
-                    <div className="h-4 w-3/4 rounded bg-foreground/5 shimmer" />
-                    <div className="mt-6 p-4 rounded-xl border border-border bg-background-secondary">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="h-2 w-2 rounded-full bg-brand" />
-                        <div className="h-3 w-32 rounded bg-foreground/10" />
+                <div className="col-span-12 md:col-span-9 p-6 md:p-8 text-left flex flex-col h-full relative">
+                  {/* Notes Header */}
+                  <h3 className="text-xl font-bold text-foreground mb-4">Introduction to UX Research</h3>
+                  
+                  {/* Notes Body */}
+                  <div className="space-y-3 mb-8">
+                    <p className="text-sm text-foreground-muted leading-relaxed">
+                      User experience research is the systematic study of target users and their requirements, to add realistic contexts and insights to design processes. 
+                    </p>
+                    <p className="text-sm text-foreground-muted leading-relaxed">
+                      Key methodologies include <strong className="text-foreground">interviews</strong>, <strong className="text-foreground">surveys</strong>, and <strong className="text-foreground">usability testing</strong>.
+                    </p>
+                    
+                    <ul className="list-disc pl-5 text-sm text-foreground-muted space-y-1 pt-2">
+                      <li>Qualitative research (Why?)</li>
+                      <li>Quantitative research (What & How many?)</li>
+                    </ul>
+                  </div>
+                  
+                  {/* Q&A Popover/Section mockup */}
+                  <div className="mt-auto p-4 rounded-xl border border-border bg-background-secondary shadow-sm">
+                    <div className="flex justify-between items-center mb-3">
+                      <div className="flex items-center gap-2">
+                        <div className="flex -space-x-2">
+                           <div className="h-6 w-6 rounded-full bg-blue-500 border-2 border-surface flex items-center justify-center text-[10px] text-white font-bold">M</div>
+                           <div className="h-6 w-6 rounded-full bg-green-500 border-2 border-surface flex items-center justify-center text-[10px] text-white font-bold">A</div>
+                        </div>
+                        <span className="text-xs font-semibold text-foreground">Live Q&A</span>
                       </div>
-                      <div className="h-24 w-full rounded-lg bg-foreground/5" />
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-brand/10 text-brand">3 New</span>
                     </div>
-                    <div className="h-4 w-2/3 rounded bg-foreground/5 shimmer" />
-                    <div className="h-4 w-4/5 rounded bg-foreground/5 shimmer" />
+                    
+                    <div className="p-3 rounded-lg bg-surface border border-border">
+                      <p className="text-xs font-medium text-foreground mb-1">What sample size is ideal for usability testing?</p>
+                      <div className="flex items-center gap-2 text-[10px] text-foreground-muted">
+                        <span className="text-brand font-semibold">12 Upvotes</span>
+                        <span>•</span>
+                        <span>Asked by Alex</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -183,6 +208,16 @@ export function HeroSection() {
           </div>
         </motion.div>
       </div>
+
+      {isJoinModalOpen && (
+        <JoinSessionModal onClose={() => setIsJoinModalOpen(false)} />
+      )}
+
+      <AuthModal 
+        isOpen={authModalConfig.isOpen} 
+        onClose={() => setAuthModalConfig({ ...authModalConfig, isOpen: false })} 
+        defaultView={authModalConfig.view} 
+      />
     </section>
   );
 }

@@ -160,13 +160,13 @@ export function WorkspaceSpinWheel({ sessionId, userId, isHost }: WorkspaceSpinW
             return (
               <div 
                 key={p.id}
-                className="absolute top-1/2 left-1/2 w-1/2 h-8 -mt-4 origin-left flex items-center pl-10 md:pl-14 pr-2"
+                className="absolute top-1/2 left-1/2 w-1/2 h-8 -mt-4 origin-left flex items-center pl-4 pr-6 md:pr-10"
                 style={{
                   transform: `rotate(${startAngle + sliceAngle / 2 - 90}deg)`
                 }}
               >
                 <span 
-                  className="text-white font-bold whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] block w-full text-left"
+                  className="text-white font-bold whitespace-nowrap overflow-hidden text-ellipsis drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)] block w-full text-right"
                   style={{
                     fontSize: Math.max(9, Math.min(16, 300 / validParticipants.length)) + 'px',
                   }}

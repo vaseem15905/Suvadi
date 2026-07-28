@@ -23,8 +23,8 @@ export default function AboutPage() {
               Built for the <span className="gradient-text">curious minds</span>
             </h1>
             <p className="mt-6 text-lg text-foreground-muted leading-relaxed">
-              Suvadi (சுவடி) means &ldquo;a space for dialogue&rdquo; in Tamil. We built it because
-              the best learning happens through conversation — and too many tools get in the way.
+              Suvadi (சுவடி) means &ldquo;a book&rdquo; in Tamil. We built it because every collaborative session
+              writes a new chapter of knowledge — and we wanted to give you the perfect blank page to create together.
             </p>
           </AnimateOnScroll>
         </div>

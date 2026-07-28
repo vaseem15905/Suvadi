@@ -45,12 +45,6 @@ export function CTASection() {
                   Get Started Free
                   <ArrowRight className="h-4 w-4" />
                 </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-8 py-3.5 text-base font-semibold text-white transition-all duration-200 hover:bg-white/10 active:scale-[0.98]"
-                >
-                  Talk to Sales
-                </Link>
               </div>
             </div>
           </div>

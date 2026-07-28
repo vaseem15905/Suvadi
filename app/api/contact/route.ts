@@ -15,18 +15,16 @@ export async function POST(request: NextRequest) {
     const { name, email, subject, message } = schema.parse(body);
 
     const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT) || 587,
-      secure: false,
+      service: 'gmail',
       auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: process.env.EMAIL_USER || 'suvadi.app@gmail.com',
+        pass: process.env.EMAIL_APP_PASSWORD,
       },
     });
 
     await transporter.sendMail({
-      from: `"Suvadi Contact" <${process.env.SMTP_USER}>`,
-      to: process.env.CONTACT_EMAIL,
+      from: `"Suvadi Contact" <${process.env.EMAIL_USER || 'suvadi.app@gmail.com'}>`,
+      to: 'suvadi.app@gmail.com',
       replyTo: email,
       subject: `[Contact] ${subject}`,
       html: `
