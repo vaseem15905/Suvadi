@@ -5,7 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import {
   FileText, PenTool, FolderOpen, MessageCircleQuestion,
-  Megaphone, Users, Copy, Share2, Settings, Maximize, Minimize
+  Megaphone, Users, Copy, Share2, Settings, Maximize, Minimize, Star
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { WorkspaceNotes } from '@/components/workspace/workspace-notes';
@@ -14,6 +14,7 @@ import { WorkspaceAnnouncements } from '@/components/workspace/workspace-announc
 import { WorkspaceParticipants } from '@/components/workspace/workspace-participants';
 import { WorkspaceResources } from '@/components/workspace/workspace-resources';
 import { WorkspaceWhiteboard } from '@/components/workspace/workspace-whiteboard';
+import { WorkspaceSpinWheel } from '@/components/workspace/workspace-spin-wheel';
 import { toast } from 'sonner';
 
 const TABS = [
@@ -23,6 +24,7 @@ const TABS = [
   { id: 'questions',    label: 'Q&A',           icon: MessageCircleQuestion },
   { id: 'announcements',label: 'Announce',      icon: Megaphone },
   { id: 'participants', label: 'People',         icon: Users },
+  { id: 'spin',         label: 'Spin the Wheel', icon: Star },
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];
@@ -210,6 +212,9 @@ export function WorkspaceClient({ session, userId, isHost }: WorkspaceClientProp
         </div>
         <div className={cn("flex-1 flex-col w-full h-full", activeTab === 'participants' ? "flex" : "hidden")}>
           <WorkspaceParticipants sessionId={session.id} userId={userId} isHost={isHost} />
+        </div>
+        <div className={cn("flex-1 flex-col w-full h-full", activeTab === 'spin' ? "flex" : "hidden")}>
+          <WorkspaceSpinWheel sessionId={session.id} userId={userId} isHost={isHost} />
         </div>
       </div>
     </div>

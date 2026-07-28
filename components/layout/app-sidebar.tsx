@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
 import {
   LayoutDashboard, CalendarDays, PlusCircle, Bell, Settings, LogOut, User, ChevronLeft, Menu, X,
-  FileText, PenTool, FolderOpen, MessageCircleQuestion, Megaphone, Users
+  FileText, PenTool, FolderOpen, MessageCircleQuestion, Megaphone, Users, Star
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
@@ -27,6 +27,7 @@ const workspaceTabs = [
   { id: 'questions',     label: 'Q&A',           icon: MessageCircleQuestion },
   { id: 'announcements', label: 'Announce',      icon: Megaphone },
   { id: 'participants',  label: 'People',        icon: Users },
+  { id: 'spin',          label: 'Spin the Wheel', icon: Star },
 ];
 
 const bottomItems = [

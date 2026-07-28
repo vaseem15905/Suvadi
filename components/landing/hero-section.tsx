@@ -34,7 +34,7 @@ export function HeroSection() {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-brand opacity-75" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-brand" />
               </span>
-              Now in public beta — try it free
+              Supercharge your collaborative sessions
             </span>
           </motion.div>
 
