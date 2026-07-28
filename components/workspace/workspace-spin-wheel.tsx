@@ -132,7 +132,7 @@ export function WorkspaceSpinWheel({ sessionId, userId, isHost }: WorkspaceSpinW
     const sliceAngle = 360 / validParticipants.length;
 
     return (
-      <div className="relative w-72 h-72 md:w-96 md:h-96 mx-auto">
+      <div className="relative w-80 h-80 md:w-[440px] md:h-[440px] lg:w-[520px] lg:h-[520px] mx-auto mt-4">
         {/* Pointer */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -mt-4 z-20">
           <div className="w-0 h-0 border-l-[16px] border-r-[16px] border-t-[28px] border-l-transparent border-r-transparent border-t-foreground drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)]"></div>
